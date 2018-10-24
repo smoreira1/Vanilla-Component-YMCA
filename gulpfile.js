@@ -3,6 +3,13 @@ const cssmin = require('gulp-cssmin');
 const rename = require('gulp-rename');
 const minify = require('gulp-minify');
 const hash = require('gulp-hash');
+const clean = require('gulp-clean');
+
+
+gulp.task('delete-dist', function () {
+    return gulp.src('dist', {read: false})
+        .pipe(clean());
+});
 
 gulp.task('css', function () {
     gulp.src('src/*.css')
@@ -10,6 +17,8 @@ gulp.task('css', function () {
         .pipe(rename({
             suffix: '.min'
         }))
+        .pipe(gulp.dest('demo'))
+        .pipe(hash())
         .pipe(gulp.dest('dist'));
 });
 
@@ -24,7 +33,11 @@ gulp.task('scripts', function () {
         .pipe(rename({
             suffix: '.min'
         }))
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('demo'))
+        .pipe(hash()) 
+        .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', ['css', 'scripts']);
+
+
+gulp.task('default', ['delete-dist', 'css', 'scripts']);
