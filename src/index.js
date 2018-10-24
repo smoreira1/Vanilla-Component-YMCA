@@ -74,7 +74,7 @@ window.ymcaSearchComponent = {
                     return `<option value='${i.value}'>${i.name}</option>`
                 }
             }).join('');
-            return `<label for="programs">Programs</label><select class='ymca-program-select ymca-component-select' name='ymca-programs'>${programOptions}</select>`;
+            return `<select class='ymca-program-select ymca-component-select' name='ymca-programs'>${programOptions}</select>`;
         },
         getFamilyCentersRendered: function () {
             const familyCentersOptions = this.familyCenters.map(i => {
