@@ -1,3 +1,8 @@
-ymcaSearchComponent.init(true);
-ymcaSearchComponent.render();
-
+const filters = {
+    familyCenter: '',
+    zipCode: '',
+    program: '',
+    dayOfTheWeek: '',
+    times: ''
+};
+ymcaSearchComponent.init(filters, false, true, false);

@@ -1,33 +1,40 @@
 window.ymcaSearchComponent = {
     loggedIn: false,
     async: true,
+    renderResultsNow: false,
     familyName: 'Not logged in.',
     filters: {
         familyCenter: '',
-        zipCode: '32825',
+        zipCode: '',
         program: '',
         dayOfTheWeek: '',
         times: ''
     },
-    familyCenters: [{
-        value: 'family',
-        name: 'family-center'
-    }],
-    programs: [{
-        value: 'program',
-        name: 'program'
-    }],
-    init: async function (loggedIn, familyCenter, program, async) {
-            this.config(loggedIn, async);
-            const programsReponse = await fetch('program.json' , {mode:'cors'});
-            this.programs = programsReponse.json();
-            const familyCentersResponse = await fetch('familyCenters.json' , {mode:'cors'});
-            this.familyCenters = await familyCentersResponse;
+    familyCenters: [],
+    programs: [],
+    init: async function (filters, loggedIn, async, renderResultsNow) {
+            this.config(filters, loggedIn, async, renderResultsNow);
+            //NOTE: FIX ME! THESE ASYNC CALLS DO NOT DEPEND ON EACH OTHER.
+            this.programs = await fetch('programs.json' , {mode:'cors'}).then((response) => {
+                return response.json();
+            });
+            this.familyCenters = await fetch('familyCenters.json' , {mode:'cors'}).then((response) => {
+                return response.json();
+            });
             this.render();
+            if(this.renderResultsNow){
+                this.search();
+            }
         },
-        config: function (loggedIn, async) {
+        config: function (filters, loggedIn, async, renderResultsNow) {
+            this.filters.familyCenter = filters.familyCenter;
+            this.filters.zipCode = filters.zipCode;
+            this.filters.program = filters.program;
+            this.filters.daysOfTheWeek = filters.daysOfTheWeek;
+            this.filters.times = filters.times;
             this.loggedIn = loggedIn;
             this.async = async;
+            this.renderResultsNow = renderResultsNow;
         },
         render: function () {
             document.getElementById("ymca-search-component").innerHTML = `<div class='ymca-component-search'>
@@ -67,10 +74,9 @@ window.ymcaSearchComponent = {
                     return `<option value='${i.value}'>${i.name}</option>`
                 }
             }).join('');
-            return `<select class='ymca-program-select ymca-component-select' name='ymca-programs'>${programOptions}</select>`;
+            return `<label for="programs">Programs</label><select class='ymca-program-select ymca-component-select' name='ymca-programs'>${programOptions}</select>`;
         },
         getFamilyCentersRendered: function () {
-            console.log(this.familyCenters);
             const familyCentersOptions = this.familyCenters.map(i => {
                 if (this.filters.familyCenter === i.value) {
                     return `<option value='${i.value}' selected>${i.name}</option>`
