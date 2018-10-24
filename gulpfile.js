@@ -5,7 +5,6 @@ const minify = require('gulp-minify');
 const hash = require('gulp-hash');
 const clean = require('gulp-clean');
 
-
 gulp.task('delete-dist', function () {
     return gulp.src('dist', {read: false})
         .pipe(clean());
@@ -37,7 +36,5 @@ gulp.task('scripts', function () {
         .pipe(hash()) 
         .pipe(gulp.dest('dist'));
 });
-
-
 
 gulp.task('default', ['delete-dist', 'css', 'scripts']);

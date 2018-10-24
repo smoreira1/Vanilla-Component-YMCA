@@ -1,0 +1,16 @@
+.ymca{
+    display:grid;
+    grid-template-areas: "ymca-search-component ymca-search-results";
+    height:100%;
+    grid-template-columns: 250px 1fr;
+    margin-left:50px;
+    margin-right:50px;
+}
+.ymca-search-compoent{
+    width:250px;
+    grid-area: ymca-search-component;
+}
+.ymca-search-results{
+    width: 700px;
+    grid-area:ymca-search-results;
+}

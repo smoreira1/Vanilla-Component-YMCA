@@ -5,4 +5,4 @@ const filters = {
     dayOfTheWeek: '',
     times: ''
 };
-ymcaSearchComponent.init(filters, false, true, false);
+ymcaSearchComponent.init(filters, false, true, false, '/mock');
